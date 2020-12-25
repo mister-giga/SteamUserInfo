@@ -7,10 +7,20 @@ It can also detect active steam account that is currently running steam app.
 Data is based on steam registry keys.</Description>
     <Authors>Giga Bokuchava</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageIcon>icon.png</PackageIcon>
+    <RepositoryUrl>https://github.com/mister-giga/SteamUserInfo</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mister-giga/SteamUserInfo</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\Media\icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,22 +1,40 @@
 ﻿using SteamUserInfo;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace ConsoleApp11
+namespace Test
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            if(SteamUser.IsSteamAvailable())
+            ISteamUserLoader loader = new SteamUserDefaultLoader();
+            if(await loader.IsSteamInstalledAsync())
             {
-                foreach(var user in SteamUser.EnumerateSeteamUsers(true))
-                    Console.WriteLine($"{user.Id} >> {user.Id3Formatted} >> {user.Id64} >> Active: {user.IsActive}");
+                var allUsers = await loader.LoadUsersAsync();
+                var activeUser = await loader.LoadActiveUserAsync();
 
-                Console.WriteLine(new string('-', 100));
+                Console.WriteLine("Users signed in on this device: ");
+                int index = 0;
+                foreach(var user in allUsers)
+                {
+                    bool isActive = activeUser == user;
+                    Console.WriteLine($"{++index}) id: {user.Id}, id3: {user.Id3Formatted}, id64: {user.Id64}, persona name: {await loader.LoadSteamPersonaName(user)}, is active: {isActive}");
+                }
 
-                if(SteamUser.TryGetActiveUser(out var activeUser))
-                    Console.WriteLine($"{activeUser.Id} >> {activeUser.Id3Formatted} >> {activeUser.Id64} >> Active: {activeUser.IsActive}");
+                if(index > 0)
+                {
+                    Console.Write("Enter user number to open steam account: ");
+                    if(int.TryParse(Console.ReadLine(), out var requestedUserNumber) && requestedUserNumber <= index && requestedUserNumber > 0)
+                    {
+                        allUsers.ElementAt(requestedUserNumber - 1).OpenProfile();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Wrong user number");
+                    }
+                }
             }
             else
             {

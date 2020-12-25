@@ -4,12 +4,16 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Description>You can list every steam account (user id in all formats) that was used to sign in the steam app on windows.
 It can also detect active steam account that is currently running steam app.
-Data is based on steam registry keys.</Description>
+Data is based on steam registry keys.
+Open any user profile in steam app.
+Get users current diplay names.</Description>
     <Authors>Giga Bokuchava</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIcon>icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/mister-giga/SteamUserInfo</RepositoryUrl>
     <PackageProjectUrl>https://github.com/mister-giga/SteamUserInfo</PackageProjectUrl>
+    <PackageTags>Steam, SteamId, SteamProfile, id, id64, id3</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>

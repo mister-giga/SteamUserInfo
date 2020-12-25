@@ -1,22 +1,41 @@
-You can list every steam account (user id in all formats) that was used to sign in the steam app on windows.
+You can list steam accounts that were used to sign in the steam app on windows.
 It can also detect active steam account that is currently running steam app.
 Data is based on steam registry keys.
 
-Sample usage:
+You can use ```SteamUserDefaultLoader``` class instance to access steam information.
 
-    if(SteamUser.IsSteamAvailable())
+Retrieved ```SteamUser``` contains steam id in different formats: steamID, steamID3, steamID64.
+It also provides steam profile url that can be loaded in web brouser via ```SteamUser.GetSteamProfileUrl()```,
+and a helper method ```SteamUser.OpenProfile()``` to open steam profile directly in the steam app.
+
+Additionally ```SteamUserDefaultLoader.LoadSteamPersonaName(SteamUser)``` can be used to get user's current display name.
+
+
+Sample usage:
+```cs
+ISteamUserLoader loader = new SteamUserDefaultLoader();
+if(await loader.IsSteamInstalledAsync())
+{
+    var allUsers = await loader.LoadUsersAsync();
+    var activeUser = await loader.LoadActiveUserAsync();
+
+    int index = 0;
+    foreach(var user in allUsers)
     {
-        foreach(var user in SteamUser.EnumerateSeteamUsers(true))
-            Console.WriteLine($"{user.Id} >> {user.Id3Formatted} >> {user.Id64} >> Active: {user.IsActive}");
-        Console.WriteLine(new string('-', 100));
-        if(SteamUser.TryGetActiveUser(out var activeUser))
-            Console.WriteLine($"{activeUser.Id} >> {activeUser.Id3Formatted} >> {activeUser.Id64} >> Active: {activeUser.IsActive}");
+        bool isActive = activeUser == user;
+        Console.WriteLine($"{++index}) id: {user.Id}, id3: {user.Id3Formatted}, id64: {user.Id64}, persona name: {await loader.LoadSteamPersonaName(user)}, is active: {isActive}");
     }
 
-output:
+    if(index > 0)
+    {
+        Console.Write("Enter user number to open steam account: ");
+        if(int.TryParse(Console.ReadLine(), out var requestedUserNumber) && requestedUserNumber <= index && requestedUserNumber > 0)
+            allUsers.ElementAt(requestedUserNumber - 1).OpenProfile();
+        else
+            Console.WriteLine("Wrong user number");
+    }
+}
 
-    STEAM_0:1:526041363 >> U:1:1052082727 >> 76561199012348455 >> Active: False
-    STEAM_0:0:53039380 >> U:1:106078760 >> 76561198066344488 >> Active: True
-    -----------------------------------------------------------------------------
-    STEAM_0:0:53039380 >> U:1:106078760 >> 76561198066344488 >> Active: True
+
     
+![Console window screenshot](https://github.com/mister-giga/SteamUserInfo/blob/master/Media/Screenshot_1.png?raw=true)

@@ -35,6 +35,7 @@ if(await loader.IsSteamInstalledAsync())
             Console.WriteLine("Wrong user number");
     }
 }
+```
 
 
     

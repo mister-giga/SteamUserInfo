@@ -1,4 +1,4 @@
-![Nuget](https://img.shields.io/nuget/v/SteamUserInfo)
+[![Nuget](https://img.shields.io/nuget/v/SteamUserInfo)](https://www.nuget.org/packages/SteamUserInfo)
 
 You can list steam accounts that were used to sign in the steam app on windows.
 It can also detect active steam account that is currently running steam app.
